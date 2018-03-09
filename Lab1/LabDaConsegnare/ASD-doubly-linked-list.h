@@ -17,7 +17,6 @@ typedef node* List; // List e' il tipo "puntatore a node", dove node e' la struc
 const int FINEINPUT = -1000000;
 const int EMPTYELEM = -1000000;
 
-
 /* Nota: l'implementazione con strutture con sentinella ci consentirebbe di passare sempre la lista per valore (o per const reference) in quanto il puntatore alla sentinella, una volta creata la lista, non cambia più. Per come sono state implementate le funzioni ausiliarie nella soluzione preparata dai docenti, tuttavia, è opportuno passare la lista per riferimento. Lasciamo quindi il prototipo delle funzioni che, dal punto di vista logico, modificano la lista (anche se non modificano l'indirizzo della sentinella) con passaggio della lista per riferimento) */ 
 void clear(const List&);                 /* "smantella" la lista (tranne la sentinella) */
 Elem get(int, const List&);        	 /* restituisce l'elemento in posizione pos */

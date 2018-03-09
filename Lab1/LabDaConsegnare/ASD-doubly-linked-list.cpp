@@ -61,16 +61,39 @@ void print(const List& l)           /* stampa la lista */
 /**************************************************/
 /* Implementazione delle operazioni nel namespace */
 /**************************************************/
+void clear_rec(List& cur){
+    if(cur->info != EMPTYELEM){
+        clear(cur->next);
+        delete cur;
+    }else{
+        cur->next = cur;
+        cur->prev = cur;
+    }
+}
 
 void list::clear(const List& l)                 /* "smantella" la lista svuotandola */
 {
-    
+    node *cur = l->next;    // salto la sentinella
+    clear_rec(cur);
 }
 
 
 Elem list::get(int pos, const List& l)        /* restituisce l'elemento in posizione pos se presente; restituisce un elemento che per convenzione si decide che rappresenta l'elemento vuoto altrimenti*/
 {
-                        
+    if(!isEmpty(l)){
+        node *cur = l->next;
+        int count = 1;
+        while((cur->info != EMPTYELEM) && (count != pos)){
+            count += 1;
+            cur = cur->next;
+        }
+        if((count == pos) && (cur->info != EMPTYELEM)){ 
+            return cur->info;}
+        else{
+            return EMPTYELEM;}
+    }else{
+        return EMPTYELEM;
+    }
 }
 
 
