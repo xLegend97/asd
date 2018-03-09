@@ -64,7 +64,7 @@ void print(const List& l)           /* stampa la lista */
 
 void list::clear(const List& l)                 /* "smantella" la lista svuotandola */
 {
-
+    
 }
 
 
@@ -88,13 +88,23 @@ void list::add(int pos, Elem e, const List& l)        /* inserisce l'elemento in
 
 void list::addRear(Elem e,  const List& l)        /* inserisce l'elemento alla fine della lista */
 {
-    
+    node *aux = new node;
+    aux->info = e;
+    aux->next = l;
+    aux->prev = l->prev;
+    l->prev->next = aux;
+    l->prev = aux;
 }
 
 
 void list::addFront(Elem e, const List& l)        /* inserisce l'elemento all'inizio della lista */
 {
-     
+    node *aux = new node;
+    aux->info = e;
+    aux->next = l->next;
+    aux->prev = l;
+    l->next->prev = aux;
+    l->next = aux;
 }
 
 
@@ -112,19 +122,31 @@ void list::removeEl(Elem e, const List& l)          /* cancella l'elemento elem,
 
 bool list::isEmpty(const List& l)         /* restituisce true se la lista e' vuota (ed e' vuota se il next di l, e' l stessa */
 {
-  
+    return (l->next->info == EMPTYELEM);
 }
 
 
 int list::size(const List& l)           /* restituisce la dimensione della lista */
 {
-   
+    // creo il counter
+    int count = 0;
+    // salto la sentinella
+    node *cur = l->next;
+    while(cur->info != EMPTYELEM){
+        count++;
+        cur = cur->next;
+    }
+    return count;
 }
 
 
 void list::createEmpty(List& l)           /* crea la lista vuota */
 {
-   
+    // sentinella
+    l = new node;   
+    l->info = EMPTYELEM;
+    l->next = l;
+    l->prev = l;
 }
 
 
