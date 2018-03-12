@@ -122,7 +122,7 @@ void list::add(int pos, Elem e, const List& l)        /* inserisce l'elemento in
         if(pos == 0){addFront(e,l);}
         node *cur = l->next;    // Salto la sentinella
         int count = 0;
-        while(cur->info!= EMPTYELEM){
+        while(cur->info != EMPTYELEM){
             if(count == pos){
                 aux->next = cur;
                 aux->prev = cur->prev;
@@ -161,13 +161,37 @@ void list::addFront(Elem e, const List& l)        /* inserisce l'elemento all'in
 
 void list::removePos(int pos, const List& l)           /* cancella l'elemento in posizione pos dalla lista */
 {
-
+    if(!isEmpty(l)){
+        node *cur = l->next;
+        int count = 0;
+        while(cur->info != EMPTYELEM){
+            if(count == pos){
+                cur->next->prev = cur->prev;
+                cur->prev->next = cur->next;
+                delete cur;
+            }else{
+                count++;
+                cur = cur->next;
+            }
+        }
+    }
 }
 
 
 void list::removeEl(Elem e, const List& l)          /* cancella l'elemento elem, se presente, dalla lista */
 {
-
+    if(!isEmpty(l)){
+        node *cur = l->next;
+        while(cur->info != EMPTYELEM){
+            if(cur->info == e){
+                cur->next->prev = cur->prev;
+                cur->prev->next = cur->next;
+                delete cur;
+            }else{
+                cur = cur->next;
+            }
+        }
+    }
 }
 
 
@@ -199,6 +223,3 @@ void list::createEmpty(List& l)           /* crea la lista vuota */
     l->next = l;
     l->prev = l;
 }
-
-
-
