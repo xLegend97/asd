@@ -81,16 +81,17 @@ void list::clear(const List& l)                 /* "smantella" la lista svuotand
 Elem list::get(int pos, const List& l)        /* restituisce l'elemento in posizione pos se presente; restituisce un elemento che per convenzione si decide che rappresenta l'elemento vuoto altrimenti*/
 {
     if(!isEmpty(l)){
-        node *cur = l->next;
-        int count = 1;
-        while((cur->info != EMPTYELEM) && (count != pos)){
-            count += 1;
-            cur = cur->next;
+        node *cur = l->next;    // Salto la sentinella
+        int count = 0;
+        while(cur->info != EMPTYELEM){
+            if(count == pos){
+                return (cur->info);
+            }else{
+                cur = cur->next;
+                count++;
+            }
         }
-        if((count == pos) && (cur->info != EMPTYELEM)){ 
-            return cur->info;}
-        else{
-            return EMPTYELEM;}
+        return EMPTYELEM;
     }else{
         return EMPTYELEM;
     }
@@ -99,13 +100,44 @@ Elem list::get(int pos, const List& l)        /* restituisce l'elemento in posiz
 
 void list::set(int pos, Elem e, const List& l)        /* modifica l'elemento in posizione pos, se la posizione e' ammissibile */
 {
-   
+    /*
+    if(!isEmpty(l)){
+        node *cur = l->next;    // Salto la sentinella
+        int count = 0;
+        while((cur->info != EMPTYELEM) && (count != pos)){
+            count++;
+            cur = cur->next;
+        }
+        if((count == pos) && (cur->info != EMPTYELEM)){
+            cur->info = e;
+        }
+    }
+    */
+    if(!isEmpty(l)){
+        node *cur = l->next;    // Salto la sentinella
+        int count = 0;
+        while(cur->info != EMPTYELEM){
+            if(count == pos){
+                cur->info = e;
+            }else{
+                cur = cur->next;
+                count++;
+            }
+        }
+    }
 }
 
 
 void list::add(int pos, Elem e, const List& l)        /* inserisce l'elemento in posizione pos, shiftando a destra gli altri elementi */
 {                                               
-  
+    /*if(!isEmpty(l)){
+        node *cur = l->next;
+        int count = 0;
+        while((cur->info!= EMPTYELEM) && count != pos){
+            count++;
+            cur = cur->next;
+        }
+    }*/
 }
 
 
