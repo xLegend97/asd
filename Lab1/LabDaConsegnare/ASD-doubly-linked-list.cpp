@@ -100,44 +100,40 @@ Elem list::get(int pos, const List& l)        /* restituisce l'elemento in posiz
 
 void list::set(int pos, Elem e, const List& l)        /* modifica l'elemento in posizione pos, se la posizione e' ammissibile */
 {
-    /*
     if(!isEmpty(l)){
         node *cur = l->next;    // Salto la sentinella
         int count = 0;
         while((cur->info != EMPTYELEM) && (count != pos)){
-            count++;
             cur = cur->next;
+            count++;
         }
         if((count == pos) && (cur->info != EMPTYELEM)){
             cur->info = e;
-        }
-    }
-    */
-    if(!isEmpty(l)){
-        node *cur = l->next;    // Salto la sentinella
-        int count = 0;
-        while(cur->info != EMPTYELEM){
-            if(count == pos){
-                cur->info = e;
-            }else{
-                cur = cur->next;
-                count++;
-            }
         }
     }
 }
 
 
 void list::add(int pos, Elem e, const List& l)        /* inserisce l'elemento in posizione pos, shiftando a destra gli altri elementi */
-{                                               
-    /*if(!isEmpty(l)){
-        node *cur = l->next;
+{   
+    node *aux = new node;
+    aux->info = e;                                 
+    if(!isEmpty(l)){
+        if(pos == 0){addFront(e,l);}
+        node *cur = l->next;    // Salto la sentinella
         int count = 0;
-        while((cur->info!= EMPTYELEM) && count != pos){
-            count++;
-            cur = cur->next;
+        while(cur->info!= EMPTYELEM){
+            if(count == pos){
+                aux->next = cur;
+                aux->prev = cur->prev;
+                cur->prev->next = aux;
+                cur->prev = aux;
+            }else{
+                count++;
+                cur = cur->next;
+            }
         }
-    }*/
+    }
 }
 
 
