@@ -164,11 +164,12 @@ void list::removePos(int pos, const List& l)           /* cancella l'elemento in
     if(!isEmpty(l)){
         node *cur = l->next;
         int count = 0;
-        while(cur->info != EMPTYELEM){
-            if(count == pos){
+        while((cur->info != EMPTYELEM) && (count <= pos)){
+            if((count == pos) && (cur->info != EMPTYELEM)){
                 cur->next->prev = cur->prev;
                 cur->prev->next = cur->next;
                 delete cur;
+                break;
             }else{
                 count++;
                 cur = cur->next;
@@ -187,6 +188,7 @@ void list::removeEl(Elem e, const List& l)          /* cancella l'elemento elem,
                 cur->next->prev = cur->prev;
                 cur->prev->next = cur->next;
                 delete cur;
+                break;
             }else{
                 cur = cur->next;
             }
