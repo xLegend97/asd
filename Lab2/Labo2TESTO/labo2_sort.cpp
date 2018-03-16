@@ -1,6 +1,5 @@
 #include "labo2_sort.h"
 
-
 void scambia(vector<int>& v, int i, int j)
 { 
   int tmp = v[j];
@@ -141,19 +140,60 @@ void mergeSort(vector<int>& v)
 				QUICKSORT CON SCELTA "BANALE" DEL PIVOT
 ***************************************************************************************/
 
-void quickSortTrivial(vector<int>& v)
-{
-   /* Implementare quickSort banale con partizione in place */
+int partition(vector<int> v, int first, int last){
+  int p = v[first]; // Scelgo il pivot in prima posizione
+  int i = first+1;
+  for(int j = first+1; j < last; j++){
+    if(v[j] < p){
+      scambia(v,i,j);
+      i++;
+    }
+  }
+  scambia(v, first, i-1);
+  return i; 
 }
 
+void qs(vector<int>& v, int first, int last){
+  if(first < last){
+    int p = partition(v,first,last);
+    qs(v, first, p - 1);
+    qs(v, p + 1, last);
+  }
+}
 
+void quickSortTrivial(vector<int>& v)
+{
+  qs(v, 0, v.size());
+}
 
 
 /**************************************************************************************
 				QUICKSORT RANDOMIZZATO
 ***************************************************************************************/
+int rd_partition(vector<int> v, int first, int last){
+  srand(time(NULL));
+  int ind = (rand()%(last-first));
+  int p = v[ind];
+  int i = first + 1;
+  for(int j = first + 1; j < last; j++){
+    if(v[j] < p){
+      scambia(v, v[j], v[i]);
+      i++;
+    }
+  }
+  scambia(v, v[first], v[i - 1]);
+  return ind;
+}
+
+void rd_qs(vector<int>& v, int first, int last){
+  if(first < last){
+    int p = rd_partition(v, first, last);
+    rd_qs(v, first,p - 1);
+    rd_qs(v, p + 1, last);
+  }
+}
 
 void quickSortRandom(vector<int>& v)
 {
-   /* Implementare quickSort randomizzato con partizione in place */
+  rd_qs(v, 0, v.size());
 }
