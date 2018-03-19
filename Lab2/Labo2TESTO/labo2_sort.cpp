@@ -140,7 +140,7 @@ void mergeSort(vector<int>& v)
 				QUICKSORT CON SCELTA "BANALE" DEL PIVOT
 ***************************************************************************************/
 
-int partition(vector<int> v, int first, int last){
+int partition(vector<int>& v, int first, int last){
   int p = v[first]; // Scelgo il pivot in prima posizione
   int i = first+1;
   for(int j = first+1; j < last; j++){
@@ -154,10 +154,11 @@ int partition(vector<int> v, int first, int last){
 }
 
 void qs(vector<int>& v, int first, int last){
-  if(first < last){
+  if(first != last){
     int p = partition(v,first,last);
+
     qs(v, first, p - 1);
-    qs(v, p + 1, last);
+    qs(v, p , last);
   }
 }
 
@@ -170,30 +171,31 @@ void quickSortTrivial(vector<int>& v)
 /**************************************************************************************
 				QUICKSORT RANDOMIZZATO
 ***************************************************************************************/
-int rd_partition(vector<int> v, int first, int last){
-  srand(time(NULL));
-  int ind = (rand()%(last-first));
+int rd_partition(vector<int>& v, int first, int last){
+  int ind = first + (rand() % (last-first));
+  scambia(v,ind,first);
   int p = v[ind];
-  int i = first + 1;
-  for(int j = first + 1; j < last; j++){
+  int i = ind + 1;
+  for(int j = ind + 1; j < last; j++){
     if(v[j] < p){
-      scambia(v, v[j], v[i]);
+      scambia(v, i, j);
       i++;
     }
   }
-  scambia(v, v[first], v[i - 1]);
-  return ind;
+  scambia(v, ind, i - 1);
+  return i;
 }
 
 void rd_qs(vector<int>& v, int first, int last){
-  if(first < last){
+  if(first != last){
     int p = rd_partition(v, first, last);
-    rd_qs(v, first,p - 1);
-    rd_qs(v, p + 1, last);
+    rd_qs(v, first, p - 1);
+    rd_qs(v, p, last);
   }
 }
 
 void quickSortRandom(vector<int>& v)
 {
+  srand(time(NULL));
   rd_qs(v, 0, v.size());
 }
