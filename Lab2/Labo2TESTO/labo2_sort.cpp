@@ -174,15 +174,15 @@ void quickSortTrivial(vector<int>& v)
 int rd_partition(vector<int>& v, int first, int last){
   int ind = first + (rand() % (last-first));
   scambia(v,ind,first);
-  int p = v[ind];
-  int i = ind + 1;
-  for(int j = ind + 1; j < last; j++){
+  int p = v[first];
+  int i = first + 1;
+  for(int j = first + 1; j < last; j++){
     if(v[j] < p){
       scambia(v, i, j);
       i++;
     }
   }
-  scambia(v, ind, i - 1);
+  scambia(v, first, i - 1);
   return i;
 }
 
