@@ -16,10 +16,10 @@ const Stack EMPTYSTACK = NULL;
 const int FINEINPUT = -1000000;
 const int EMPTYELEM = -1000000;
 
-bool isEmpty(const Stack&);
-void push(const Elem, Stack&);	/* aggiunge elem in cima (operazione safe, si può sempre fare) */
-Elem pop(Stack&);	/* toglie dallo stack l'ultimo elemento e lo restituisce; se lo stack è vuoto la condizione è di errore. Lo segnaliamo restituendo EMPTYELEM (potremmo in alternativa sollevare un'eccezione) */
-Elem top(Stack&);	/* restituisce l'ultimo elemento dello stack senza toglierlo; se lo stack è vuoto la condizione è di errore. Lo segnaliamo restituendo EMPTYELEM (potremmo in alternativa sollevare un'eccezione) */
+bool isEmpty(const Stack&); 
+void push(const Elem, Stack&);    /* aggiunge elem in cima (operazione safe, si può sempre fare) */
+Elem pop(Stack&);    /* toglie dallo stack l'ultimo elemento e lo restituisce; se lo stack è vuoto la condizione è di errore. Lo segnaliamo restituendo EMPTYELEM (potremmo in alternativa sollevare un'eccezione) */
+Elem top(Stack&);    /* restituisce l'ultimo elemento dello stack senza toglierlo; se lo stack è vuoto la condizione è di errore. Lo segnaliamo restituendo EMPTYELEM (potremmo in alternativa sollevare un'eccezione) */
 }
 
 
