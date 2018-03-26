@@ -37,8 +37,17 @@ Queue queue::createEmpty()
 /****************************************************************/
 void queue::enqueue(Elem e, Queue& l) // aggiunge e in coda
 {
-    if(l.size != l.maxsize){
-        l.queue[l.size + 1] = e;
+    if(l.size >= l.maxsize){
+        int oMaxsize = l.maxsize;
+        l.maxsize = l.maxsize + BLOCKDIM;
+        Elem* aux = l.queue;
+        l.queue = new Elem[l.maxsize];
+        for(int i = 0; i < oMaxsize; ++i){
+            l.queue[i] = aux[i];
+        }
+        delete [] aux;
+    }else{
+        l.queue[l.size] = e;
         l.size++;
     }
 }
@@ -47,14 +56,33 @@ void queue::enqueue(Elem e, Queue& l) // aggiunge e in coda
 /****************************************************************/
 Elem queue::dequeue(Queue& l) // rimuove il primo elemento e lo restituisce
 {
-   return EMPTYELEM;
+    if(isEmpty(l)) return EMPTYELEM;
+    else{
+        l.size = l.size - 1;
+
+        Elem e = l.queue[0];
+        for(int i = 0; i < l.size; ++i){
+            l.queue[i] = l.queue[i + 1];
+        }
+        if(l.size < (l.maxsize - BLOCKDIM)){
+            l.maxsize = l.maxsize - BLOCKDIM;
+            Elem* aux = l.queue;
+            l.queue = new Elem[l.maxsize];
+            for(int i = 0; i < l.maxsize; ++i){
+                l.queue[i] = aux[i];
+            }
+            delete [] aux;
+        }
+    }
+    return e;
 }
 
 
 /****************************************************************/
 Elem queue::first(Queue& l) // restituisce il primo elemento
 {
-   return EMPTYELEM;
+    if(isEmpty(l)) return EMPTYELEM;
+    return l.queue[0];
 }
 
 
