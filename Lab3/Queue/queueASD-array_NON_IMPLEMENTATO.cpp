@@ -6,18 +6,41 @@ using namespace queue;
 /****************************************************************/
 /* 			FUNZIONI SULLE CODE 			*/
 /****************************************************************/
+/*--Ausiliarie--*/
+Queue copy(const Queue& q){         // Funzione pr la copia profonda di tutti gli elementi presenti nella queue.
+    Elem* aux = new Elem[q.maxsize];
+    for(int i = 0; i<q.size; ++i){
+        aux[i] = q.queue[i];
+    }
+    Queue nQ;
+    nQ.queue = aux;
+    nQ.maxsize = q.maxsize;
+    nQ.size = q.size;
+    return nQ;
+}
+
+Queue resize(const Queue& q){
+    Elem* aux = new Elem[q.maxsize + BLOCKDIM];
+}
 
 /****************************************************************/
 Queue queue::createEmpty()
 {
-   Queue q;
-   return q;
+    Queue q;
+    q.size = 0;
+    q.maxsize = BLOCKDIM;
+    Elem* aux = new Elem[BLOCKDIM];
+    q.queue = aux;
+    return q;
 }
 
 /****************************************************************/
 void queue::enqueue(Elem e, Queue& l) // aggiunge e in coda
 {
-  return;
+    if(l.size != l.maxsize){
+        l.queue[l.size + 1] = e;
+        l.size++;
+    }
 }
 
 
@@ -38,7 +61,7 @@ Elem queue::first(Queue& l) // restituisce il primo elemento
 /****************************************************************/
 bool queue::isEmpty(const Queue& l)
 {
-   return true;
+   return (l.size == 0);
 }
 
 

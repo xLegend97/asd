@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// Implementa QUEUE con strutture indicizzate e tipo base Elem dotato di ordinamento
+// Implementa QUEUE con array dinamico e tipo base Elem dotato di ordinamento
  
 namespace queue{
 
