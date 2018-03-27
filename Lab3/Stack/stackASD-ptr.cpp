@@ -19,43 +19,19 @@ bool stack::isEmpty(const Stack& s)
 /****************************************************************/
 void stack::push(const Elem x, Stack& s) 
 {
-    cell *aux = new cell;
+    cell* aux = new cell;
     aux->elem = x;
-    aux->next = EMPTYSTACK;
-    if(!isEmpty(s)){
-        cell *cur = s;
-        while(cur != EMPTYSTACK){
-            if(cur->next == EMPTYSTACK){
-                cur->next = aux;
-                return;
-            }else{
-                cur = cur->next;
-            }
-        }
-    }else{
-        s = aux;
-    }
+    aux->next = s;
+    s = aux;
 }
 
 /****************************************************************/
 Elem stack::pop(Stack& s)
 {
-    Elem result = EMPTYELEM;
-    if(!isEmpty(s)){
-        cell *cur = s->next;
-        cell *prev = s;
-        while(cur != EMPTYSTACK){
-            if(cur->next == EMPTYSTACK){
-                prev->next = EMPTYSTACK;
-                result = cur->elem;
-                delete cur;
-                break;
-            }else{
-                prev = prev->next;
-                cur = cur->next;
-            }
-        }
-    }
+    Elem result = s->elem;
+    cell* cur = s;
+    s = s->next;
+    delete cur;
     return result;
 }
 
@@ -63,20 +39,7 @@ Elem stack::pop(Stack& s)
 /****************************************************************/
 Elem stack::top(Stack& s)
 {
-//return EMPTYELEM;
-    Elem result = EMPTYELEM;
-    if(!isEmpty(s)){
-        cell *cur = s;
-        while(cur != EMPTYSTACK){
-            if(cur->next == EMPTYSTACK){
-                result = cur->elem;
-                break;
-            }else{
-                cur = cur->next;
-            }
-        }
-    }
-    return result;
+    return s->elem;
 }
 
 
