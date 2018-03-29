@@ -30,13 +30,21 @@ using std::ostringstream;
 // da stringa a numero
 int str2int(const string &s) {
   // DA IMPLEMENTARE
-  return 0;
+  //return 0;
+  int n;
+  istringstream itmp(s);
+  itmp >> n;
+  return n;
 }
 
 // da numero a stringa
 string int2str(int n) {
   // DA IMPLEMENTARE
-  return "";
+  //return "";
+  ostringstream otmp;
+  otmp << n;
+  string s = otmp.str();
+  return s;
 }
 
 // ritorna false se e solo se token di tipo sconosciuto o se stringa vuota.
@@ -45,6 +53,46 @@ string int2str(int n) {
 
 bool prossimoToken(string &s, token &t) {
   // DA IMPLEMENTARE
-  return false;
+  //return false;
+  if(!s.empty()){
+    int count = 0;
+    for(unsigned int i = 0; i < s.find(' ',0); ++i){
+      count++;
+    }
+    string substring = s.substring(0,count);
+    t.val = substring;
+    char c;
+    int n;
+    if(substring.find(n,0) == string::npos){
+      switch( substring.find(c, 0) ){
+        case '(':{
+          t.k = PARENTESI_APERTA;
+          break;
+        }
+        case ')':{
+          t.k = PARENTESI_CHIUSA;
+          break;
+        }
+        case '+':{
+          t.k = OP_SOMMA;
+          break;
+        }
+        case '-':{
+          t.k = OP_SOTTRAZIONE;
+          break;
+        }
+        case '*':{
+          t.k = OP_MOLTIPLICAZIONE; 
+          break;
+        }
+        default: t.k = SCONOSCIUTO;
+      }
+    }else{
+      t.k = NUMERO;
+    }
+    return true;
+  }else{
+    return false;
+  }
 }
 
