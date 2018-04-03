@@ -60,7 +60,6 @@ bool prossimoToken(string &s, token &t) {
       count++;
     }
     string substring = s.substr(0,count);
-    s.erase(0,count);
     t.val = substring;
     char c;
     int n;
