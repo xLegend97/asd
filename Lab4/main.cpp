@@ -30,9 +30,20 @@ using std::ostringstream;
 
 // Estrae uno dopo l'altro i token dalla stringa "str", inserendoli via via nella coda "codaToken"
 bool leggi(const string &str, queue::Queue &codaToken) {
-
-  // DA IMPLEMENTARE
-  return false;
+  bool result = false;
+  try{
+    for(unsigned int i = 0; i < str.size(); ++i){
+      token t;
+      //queue::enqueue(prossimoToken(str, t), codaToken);
+      result = prossimoToken(str, t);
+      if(result){
+        queue::enqueue()
+      }
+    }
+  }catch(string err){
+    std::cerr << "ERROR: " << err << std::endl;
+  }
+  return result;
 }
 
 // Estrae uno dopo l'altro i token dalla coda, inserendoli via via sullo stack.
