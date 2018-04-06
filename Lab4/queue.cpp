@@ -2,6 +2,10 @@
 
 using namespace queue;
 
+struct cell{
+  Elem info;
+  cell* next;
+};
 
 /****************************************************************/
 /* 			FUNZIONI SULLE CODE 			*/
@@ -23,10 +27,8 @@ Elem queue::dequeue(Queue& l) // rimuove il primo elemento e lo restituisce
 }
 
 /****************************************************************/
-bool queue::isEmpty(const Queue& l)
-{
-  // DA IMPLEMENTARE 
-  return true;
+bool queue::isEmpty(const Queue& l){
+  return (l == EMPTYQUEUE);
 }
 
 /****************************************************************/

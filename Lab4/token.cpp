@@ -29,8 +29,6 @@ using std::ostringstream;
 
 // da stringa a numero
 int str2int(const string &s) {
-  // DA IMPLEMENTARE
-  //return 0;
   int n;
   istringstream itmp(s);
   itmp >> n;
@@ -39,8 +37,6 @@ int str2int(const string &s) {
 
 // da numero a stringa
 string int2str(int n) {
-  // DA IMPLEMENTARE
-  //return "";
   ostringstream otmp;
   otmp << n;
   string s = otmp.str();
@@ -52,45 +48,37 @@ string int2str(int n) {
 // che diventa token.
 
 bool prossimoToken(string &s, token &t) {
-  // DA IMPLEMENTARE
-  //return false;
   if(!s.empty()){
     int count = 0;
     for(unsigned int i = 0; i < s.find(' ',0); ++i){
       count++;
     }
     string substring = s.substr(0,count);
-    s.erase(0,count);
+    s = s.erase(0, substring.size() - 1);
     t.val = substring;
-    char c;
-    int n;
-    if(substring.find(n,0) == string::npos){
-      switch( substring.find(c, 0) ){
-        case '(':{
+    if(!isdigit(substring[0])){
+      switch(substring[0]){
+        case '(':
           t.k = PARENTESI_APERTA;
           break;
-        }
-        case ')':{
+        case ')':
           t.k = PARENTESI_CHIUSA;
           break;
-        }
-        case '+':{
+        case '+':
           t.k = OP_SOMMA;
           break;
-        }
-        case '-':{
+        case '-':
           t.k = OP_SOTTRAZIONE;
           break;
-        }
-        case '*':{
-          t.k = OP_MOLTIPLICAZIONE; 
+        case '*':
+          t.k = OP_MOLTIPLICAZIONE;
           break;
-        }
         default: t.k = SCONOSCIUTO;
       }
     }else{
       t.k = NUMERO;
     }
+    std::cerr << t.val << " " << t.k << std::endl;
     return true;
   }else{
     return false;
