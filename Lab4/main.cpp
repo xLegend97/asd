@@ -31,17 +31,14 @@ using std::ostringstream;
 // Estrae uno dopo l'altro i token dalla stringa "str", inserendoli via via nella coda "codaToken"
 bool leggi(const string &str, queue::Queue &codaToken) {
   bool result = false;
-  try{
-    for(unsigned int i = 0; i < str.size(); ++i){
-      token t;
-      //queue::enqueue(prossimoToken(str, t), codaToken);
-      result = prossimoToken(str, t);
-      if(result){
-        queue::enqueue()
-      }
+  for(unsigned int i = 0; i < str.size(); ++i){
+    token t;
+    result = prossimoToken(str, t);
+    if(result){
+      queue::enqueue(t,codaToken);
+    }else{
+      throw("Unknown char!");
     }
-  }catch(string err){
-    std::cerr << "ERROR: " << err << std::endl;
   }
   return result;
 }
@@ -59,9 +56,45 @@ bool leggi(const string &str, queue::Queue &codaToken) {
 // Alla fine se non ci sono errori sintattici la funzione deve mettere nella variabile
 // risultato il vaore dell'espressione
 bool calcola(queue::Queue codaToken, int &risultato) {
-
-  // DA IMPLEMENTARE
-  return true;
+  bool result = false;
+  token t;
+  stack::Stack stackToken;
+  while((t.k) != PARENTESI_CHIUSA){
+    if(t.k != PARENTESI_CHIUSA){
+      t = queue::dequeue(codaToken);
+      stack::push(t, stackToken);
+    }else{
+      token t1, t2, op;
+      int num1, num2, r;
+      stack::pop(stackToken);   // essendo la parentesi la ignoro
+      t1 = stack::pop(stackToken);
+      op = stack::pop(stackToken);
+      t2 = stack::pop(stackToken);
+      stack::pop(stackToken);   // essendo la parentesi la ignoro
+      num1 = str2int(t1.val);
+      num2 = str2int(t2.val);
+      switch(op.k){
+        case 4:{
+          r = num1 + num2;
+          break;
+        }
+        case 5:{
+          r = num1 - num2;
+          break;
+        }
+        case 6:{
+          r = num1 * num2;
+          break;
+        }
+        default: throw ("syntactic error");
+      }
+      t1.k = NUMERO;
+      t1.val = int2str(r);
+      stack::push(t1, stackToken);
+      result = true;
+    }
+  }
+  return result;
 }
 
 /////////////////////////////////////////////////////////////////////

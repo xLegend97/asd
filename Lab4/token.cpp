@@ -73,12 +73,11 @@ bool prossimoToken(string &s, token &t) {
         case '*':
           t.k = OP_MOLTIPLICAZIONE;
           break;
-        default: t.k = SCONOSCIUTO;
+        default: { t.k = SCONOSCIUTO; return false; }
       }
     }else{
       t.k = NUMERO;
     }
-    std::cerr << t.val << " " << t.k << std::endl;
     return true;
   }else{
     return false;
