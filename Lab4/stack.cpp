@@ -2,11 +2,6 @@
 
 using namespace stack;
 
-struct cell{
-    Elem info;
-    cell* next;
-};
-
 /****************************************************************/
 bool stack::isEmpty(const Stack& s){
     return (s == EMPTYSTACK);
@@ -28,7 +23,7 @@ void stack::push(const Elem x, Stack& s){
 /****************************************************************/
 Elem stack::pop(Stack& s){
     if(!isEmpty(s)){
-        Elem result = s->elem;
+        Elem result = s->info;
         cell* cur = s;
         s = s->next;
         delete cur;

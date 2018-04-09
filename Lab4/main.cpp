@@ -33,13 +33,19 @@ bool leggi(const string &str, queue::Queue &codaToken) {
   bool result = false;
   for(unsigned int i = 0; i < str.size(); ++i){
     token t;
-    result = prossimoToken(str, t);
+    string operation = str;
+    result = prossimoToken(operation, t);
+    cerr << "\nDEBUG: " << "--LEGGI: Prendo un token e lo elimino dalla queue.";
+    cerr << "\nDEBUG: " << "--LEGGI: token: " << t.val;
     if(result){
+      cerr << "\nDEBUG: " << "--LEGGI: result: " << "TRUE, elimino.";
       queue::enqueue(t,codaToken);
     }else{
+      cerr << "\nDEBUG: " << "--LEGGI: result: " << "FALSO, throw.";
       throw("Unknown char!");
     }
   }
+  cerr << "\nDEBUG: " << "--LEGGI: result finale: " << result;
   return result;
 }
 
@@ -63,9 +69,11 @@ bool calcola(queue::Queue codaToken, int &risultato) {
     if(t.k != PARENTESI_CHIUSA){
       t = queue::dequeue(codaToken);
       stack::push(t, stackToken);
+      cerr << "\nDEBUG: " << "--CALCOLA: Sto pushando nello stack i token.";
+      cerr << "\nDEBUG: " << "--CALCOLA: token: " << t.val;
     }else{
       token t1, t2, op;
-      int num1, num2, r;
+      int num1, num2;
       stack::pop(stackToken);   // essendo la parentesi la ignoro
       t1 = stack::pop(stackToken);
       op = stack::pop(stackToken);
@@ -73,25 +81,32 @@ bool calcola(queue::Queue codaToken, int &risultato) {
       stack::pop(stackToken);   // essendo la parentesi la ignoro
       num1 = str2int(t1.val);
       num2 = str2int(t2.val);
+      cerr << "\nDEBUG: " << "--CALCOLA: token 1: " << t1.val;
+      cerr << "\nDEBUG: " << "--CALCOLA: token operatore: " << op.val;
+      cerr << "\nDEBUG: " << "--CALCOLA: token 2: " << t2.val;
+      cerr << "\nDEBUG: " << "--CALCOLA: int 1: " << num1;
+      cerr << "\nDEBUG: " << "--CALCOLA: int 2: " << num2;
       switch(op.k){
         case 4:{
-          r = num1 + num2;
+          risultato = num1 + num2;
           break;
         }
         case 5:{
-          r = num1 - num2;
+          risultato = num1 - num2;
           break;
         }
         case 6:{
-          r = num1 * num2;
+          risultato = num1 * num2;
           break;
         }
         default: throw ("syntactic error");
       }
       t1.k = NUMERO;
-      t1.val = int2str(r);
+      t1.val = int2str(risultato);
       stack::push(t1, stackToken);
       result = true;
+      cerr << "\nDEBUG: " << "--CALCOLA: risultato: " << risultato;
+      cerr << "\nDEBUG: " << "--CALCOLA: token risultato: " << t1.val;
     }
   }
   return result;
@@ -110,11 +125,13 @@ int main() {
   cout << "Inserisci l'espressione che vuoi valutare:" << endl;
   getline(cin,s);
 
+  cerr << "\nDEBUG: " << "Sto per fare la leggi.";
   if (!leggi(s,q)) {
     cout << "errore lessicale\n";
     exit(1);
   }
 
+  cerr << "\nDEBUG: " << "Sto per fare la calcola.";
   if (!calcola(q,r)) {
     cout << "errore sintattico\n";
     exit(1);

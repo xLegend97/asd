@@ -2,17 +2,12 @@
 
 using namespace queue;
 
-struct cell{
-  Elem info;
-  cell* next;
-};
-
 /****************************************************************/
 /* 			FUNZIONI SULLE CODE 			*/
 /****************************************************************/
 
 /****************************************************************/
-void queue::enqueue(Elem e, Queue& l) // aggiunge e in coda{
+void queue::enqueue(Elem e, Queue& l){// aggiunge e in coda
   // rendo inefficente la enqueue per avere la dequeue più efficente
   cell* aux = new cell;
   cell* cur = l;
