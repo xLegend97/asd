@@ -8,17 +8,29 @@ using namespace queue;
 
 /****************************************************************/
 void queue::enqueue(Elem e, Queue& l){// aggiunge e in coda
-  // rendo inefficente la enqueue per avere la dequeue più efficente
+  // rendo inefficente la enqueue per avere la dequeue più efficiente
   cell* aux = new cell;
-  cell* cur = l;
+  cerr << "\nDEBUG: " << "--ENQUEUE: creo aux.";
+  cerr << "\nDEBUG: " << "--ENQUEUE: assegno a aux --> e = (  '" << e.val << "'  ).";
   aux->info = e;
   aux->next = EMPTYQUEUE;
-  while(cur != EMPTYQUEUE){
-    if(cur->next == EMPTYQUEUE){
-      cur->next = aux;
-    }else{
-      cur = cur->next;
+  if(!isEmpty(l)){  
+    cerr << "\nDEBUG: " << "--ENQUEUE: la queue non è vuota.";
+    cell* cur = l;
+    cerr << "\nDEBUG: " << "--ENQUEUE: creo cur.";
+    while(cur != EMPTYQUEUE){
+      if(cur->next != EMPTYQUEUE){
+          cur = cur->next;
+          cerr << "\nDEBUG: " << "--ENQUEUE: scorro la queue.";
+      }else{
+        cur->next = aux;
+        cerr << "\nDEBUG: " << "--ENQUEUE: inserisco aux nella queue.";
+        cerr << "\nDEBUG: " << "--ENQUEUE: cur->next->info: " << cur->next->info.val << ".";
+      }
     }
+  }else{
+    cerr << "\nDEBUG: " << "--ENQUEUE: la queue è vuota.";
+    l = aux;
   }
 }
 
