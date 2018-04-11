@@ -50,29 +50,34 @@ string int2str(int n) {
 bool prossimoToken(string &s, token &t) {
   if(!s.empty()){
     int count = 0;
-    for(unsigned int i = 0; i < s.find(' ',0); ++i){
-      count++;
+    for(unsigned int i = 0; i < s.find(' ',0); i++){
+      ++count;
     }
     string substring = s.substr(0,count);
-    s = s.erase(0, substring.size() - 1);
+    s = s.erase(0, substring.size());
     t.val = substring;
     if(!isdigit(substring[0])){
       switch(substring[0]){
-        case '(':
+        case '(':{
           t.k = PARENTESI_APERTA;
           break;
-        case ')':
+        }
+        case ')':{
           t.k = PARENTESI_CHIUSA;
           break;
-        case '+':
+        }
+        case '+':{
           t.k = OP_SOMMA;
           break;
-        case '-':
+        }
+        case '-':{
           t.k = OP_SOTTRAZIONE;
           break;
-        case '*':
+        }
+        case '*':{
           t.k = OP_MOLTIPLICAZIONE;
           break;
+        }
         default: { t.k = SCONOSCIUTO; return false; }
       }
     }else{
