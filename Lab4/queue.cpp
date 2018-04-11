@@ -26,6 +26,7 @@ void queue::enqueue(Elem e, Queue& l){// aggiunge e in coda
         cur->next = aux;
         cerr << "\nDEBUG: " << "--ENQUEUE: inserisco aux nella queue.";
         cerr << "\nDEBUG: " << "--ENQUEUE: cur->next->info: " << cur->next->info.val << ".";
+        break;
       }
     }
   }else{

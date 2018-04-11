@@ -31,6 +31,7 @@ using std::ostringstream;
 // Estrae uno dopo l'altro i token dalla stringa "str", inserendoli via via nella coda "codaToken"
 bool leggi(const string &str, queue::Queue &codaToken) {
   bool result = false;
+  codaToken = queue::EMPTYQUEUE;
   for(unsigned int i = 0; i < str.size(); ++i){
     token t;
     string operation = str;
