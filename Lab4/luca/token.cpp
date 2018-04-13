@@ -48,7 +48,7 @@ string int2str(int n) {
 // che diventa token.
 
 bool prossimoToken(string &s, token &t) {
-  if(!s.empty()){
+  /*if(!s.empty()){
     int count = 0;
     for(unsigned int i = 0; i < s.find(' ',0); i++){
       ++count;
@@ -86,6 +86,49 @@ bool prossimoToken(string &s, token &t) {
     return true;
   }else{
     return false;
+  }*/
+  if (s.length() == 0){
+    return false;
   }
+  istringstream iss(s);
+  iss >> t.val;
+  if(t.val[0] >= '0' && t.val[0] <= '9'){
+    t.k = NUMERO;
+    string c = int2str(str2int(t.val));
+    if (t.val.compare(c.c_str()) != 0){
+      t.k = SCONOSCIUTO;
+    }
+    }else{
+    switch (t.val[0]){
+      case '(':
+        t.k = PARENTESI_APERTA;
+        break;
+      case ')':
+        t.k = PARENTESI_CHIUSA;
+        break;
+      case '+':
+        t.k = OP_SOMMA;
+        break;
+      case '-':
+        t.k = OP_SOTTRAZIONE;
+        break;
+      case '*':
+        t.k = OP_MOLTIPLICAZIONE;
+        break;
+      default:{
+        t.k = SCONOSCIUTO;
+      }
+    }
+    if (t.val.length() > 1){
+        t.k = SCONOSCIUTO;
+    }
+  }
+  if (t.val.length() + 1 > s.length()){
+    s = "";
+  }
+  else{
+    s = s.substr(t.val.length() + 1);
+  }
+  return t.k != SCONOSCIUTO;
 }
 
