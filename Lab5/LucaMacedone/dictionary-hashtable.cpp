@@ -5,7 +5,7 @@
 using namespace dict;
 
 struct dict::cell {
-        Elem	elem;
+    Elem	elem;
 	cell	*next;
 };
 
@@ -16,7 +16,11 @@ struct dict::cell {
 int h1(Key s) // funzione di hash che considera unicamente il valore ascii del primo carattere della chiave (se esiste) e restituisce il resto della divisione di tale valore per tableDim 
 {
  // implementare la funzione richiesta e modificare il return 
- return 0;
+ //return 0;
+    if(!s.empty()){
+        return (s[0] % tableDim );
+    }
+    return emptyKey;
 }
 
 
@@ -71,7 +75,27 @@ Value dict::search(const Key k, const Dictionary& s)
 /****************************************************************/
 Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
 {
-   return OK;
+   Elem e;
+   Error err;
+   e.key = tolower(k);
+   e.value = v;
+    cell* cur = s[h1(k)];
+    while(cur != emptyBucket){
+        if(cur->elem.key == e.key){
+            err = FAIL;  
+            return err;
+        }else{
+            err = OK;
+            cur = cur->next;
+        }
+    }
+    if(err == OK){
+        cell* aux = new cell;
+        aux->elem = e;
+        aux->next = emptyBucket;
+        cur->next = aux;                        // inserisco in fondo.
+        
+    }
 }
 
 
