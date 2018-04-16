@@ -61,7 +61,7 @@ int h3(Key s) // funzione di hash diversa da h1 ed h2, che progettate e implemen
 /****************************************************************/
 int h(Key s)
 {
-   return h1(s); // modificare questa chiamata per sperimentare l'utilizzo delle funzioni di hash h1, h2, h3, definite prima
+   return h2(s); // modificare questa chiamata per sperimentare l'utilizzo delle funzioni di hash h1, h2, h3, definite prima
 }
 
 
@@ -146,7 +146,21 @@ Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
     int j = h(k);
     cell* cur = s[j];
     cell* aux = new cell;
-    
+    aux->elem = e;
+    if(cur == emptyBucket){
+        return FAIL;
+    }else{
+        while(cur != emptyBucket){
+            if(cur->next == emptyBucket){
+                aux->next = emptyBucket;
+                cur->next = aux;
+                return OK;
+            }else{
+                cur = cur->next;
+            }
+        }
+        return FAIL;
+    }
 }
 
 
