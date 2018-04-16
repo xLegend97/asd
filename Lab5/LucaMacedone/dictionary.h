@@ -5,7 +5,6 @@
 #include <chrono>          // necessario compilare con -std=c++11
 #include <stdlib.h>        // srand, rand
 #include <string>          // std::string
-
 #include "string-utility.h"
 
 
