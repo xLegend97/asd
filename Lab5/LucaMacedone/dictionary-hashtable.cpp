@@ -112,48 +112,32 @@ Value dict::search(const Key k, const Dictionary& s)
 /****************************************************************/
 Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
 {
-    /*
     Elem e;
-    Error err = FAIL;
-    e.key = normalize(k);
+    Key key = normalize(k);
+    e.key = key;
     e.value = v;
-    cell* cur = s[h(k)];
-    cell* aux = new cell;
-    aux->elem = e; 
-    aux->next = emptyBucket;   
-    if(cur->next == emptyBucket){
-        cur->next = aux;
-        err = OK;
-    }else{    
-        while(cur != emptyBucket){
-            if(cur->elem.key == e.key){
-                err = FAIL;  
-                return err;
-            }else{
-                err = OK;
-                cur = cur->next;
-            }
-        }
-        if(err == OK){ 
-            cur->next = aux;                        // inserisco in fondo.
-        }
-    }
-    return err;
-    */
-    Elem e;
-    e.key = normalize(k);
-    e.value = v;
-    int j = h(k);
+    int j = h(key);
     cell* cur = s[j];
     cell* aux = new cell;
     aux->elem = e;
     if(cur == emptyBucket){
-        return FAIL;
+        cur = aux;
+        aux->next = emptyBucket;
+        cerr << "\nDEBUG: inserisco primo elemento.";
+        cerr << "\nDEBUG: indirizzo cur: " << cur;
+        cerr << "\nDEBUG: indirizzo aux: " << aux;
+        cerr << "\nDEBUG: indirizzo cur->next: " << cur->next;
+        cerr << "\nDEBUG: indirizzo cur->next: " << aux->elem.value << endl;
+        return OK;
     }else{
         while(cur != emptyBucket){
             if(cur->next == emptyBucket){
+                cerr << "\nDEBUG: inserisco l'elemento in posizione n.\n";
                 aux->next = emptyBucket;
                 cur->next = aux;
+                cerr << "\nDEBUG: indirizzo cur: " << cur;
+                cerr << "\nDEBUG: indirizzo aux: " << aux;
+                cerr << "\nDEBUG: indirizzo cur->next: " << cur->next << endl;
                 return OK;
             }else{
                 cur = cur->next;
