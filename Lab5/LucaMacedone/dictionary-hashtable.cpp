@@ -123,14 +123,9 @@ Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
     if(cur == emptyBucket){
         cur = aux;
         aux->next = emptyBucket;
-        cerr << "\nDEBUG: inserisco primo elemento.";
-        cerr << "\nDEBUG: indirizzo cur: " << cur;
-        cerr << "\nDEBUG: indirizzo aux: " << aux;
-        cerr << "\nDEBUG: indirizzo cur->next: " << cur->next;
-        cerr << "\nDEBUG: indirizzo cur->next: " << aux->elem.value << endl;
         return OK;
     }else{
-        while(cur != emptyBucket){
+        /*while(cur != emptyBucket){
             if(cur->next == emptyBucket){
                 cerr << "\nDEBUG: inserisco l'elemento in posizione n.\n";
                 aux->next = emptyBucket;
@@ -143,7 +138,10 @@ Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
                 cur = cur->next;
             }
         }
-        return FAIL;
+        return FAIL;*/
+        aux->next = cur->next;
+        cur->next = aux;
+        return OK;
     }
 }
 
