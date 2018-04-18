@@ -13,9 +13,24 @@ struct dict::cell {
 string normalize(Key k){
     string s;
     for(int i = 0; i < k.size(); i++){
-        s[i] = tolower(k[i]);
+        s[i] = k[i];
     }
+    removeBlanksAndLower(s);
     return s;
+}
+
+bool isAlreadyPresent(const Key k, int n, Dictionary& s){
+    bool result = false;
+    cell* cur = s[n];
+    while(cur != emptyBucket){
+        if(cur->elem.key == k){
+            result = true;
+            return result;
+        }else{
+            cur = cur->next;
+        }
+    }
+    return result;
 }
 
 /****************************************************************/
@@ -61,7 +76,7 @@ int h3(Key s) // funzione di hash diversa da h1 ed h2, che progettate e implemen
 /****************************************************************/
 int h(Key s)
 {
-   return h2(s); // modificare questa chiamata per sperimentare l'utilizzo delle funzioni di hash h1, h2, h3, definite prima
+   return h1(s); // modificare questa chiamata per sperimentare l'utilizzo delle funzioni di hash h1, h2, h3, definite prima
 }
 
 
@@ -70,31 +85,29 @@ int h(Key s)
 /****************************************************************/
 Error dict::deleteElem(const Key k, Dictionary& s)
 {
-    //return OK;
-    cell* cur = s[h(k)];
-    cell* prev;
-    if(cur == emptyBucket){
+    Key key = normalize(k);
+    int j = h(key);
+    if(s[j] == emptyBucket){
         return FAIL;
-    }else{
-        Error err;
+    }if(isAlreadyPresent(key, j, s)){
+        cell* cur = s[j];
+        cell* prev;
         while(cur != emptyBucket){
-            if(cur->elem.key == normalize(k)){
-                if(cur->next != emptyBucket){
-                    prev->next = cur->next;
+            if(cur->elem.key == k){
+                if(cur->next == emptyBucket){
+                    prev->next = emptyBucket;
                     delete cur;
                 }else{
-                    prev->next = emptyBucket;
+                    prev->next = cur->next;
+                    delete cur;
                 }
-                err = OK;
-                break;
+                return OK;
             }else{
-                err = FAIL;
                 prev = cur;
                 cur = cur->next;
             }
         }
-        return err;
-    }
+    }else return FAIL;
 }
 
 
@@ -112,36 +125,26 @@ Value dict::search(const Key k, const Dictionary& s)
 /****************************************************************/
 Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
 {
-    Elem e;
     Key key = normalize(k);
-    e.key = key;
-    e.value = v;
     int j = h(key);
-    cell* cur = s[j];
-    cell* aux = new cell;
-    aux->elem = e;
-    if(cur == emptyBucket){
-        cur = aux;
-        aux->next = emptyBucket;
-        return OK;
+    if(isAlreadyPresent(key, j, s)){
+        return FAIL;    // la chiave è già presente nella lista
     }else{
-        /*while(cur != emptyBucket){
-            if(cur->next == emptyBucket){
-                cerr << "\nDEBUG: inserisco l'elemento in posizione n.\n";
-                aux->next = emptyBucket;
-                cur->next = aux;
-                cerr << "\nDEBUG: indirizzo cur: " << cur;
-                cerr << "\nDEBUG: indirizzo aux: " << aux;
-                cerr << "\nDEBUG: indirizzo cur->next: " << cur->next << endl;
-                return OK;
-            }else{
-                cur = cur->next;
-            }
+        if(s[j] == emptyBucket){
+            cell* aux = new cell;
+            aux->elem.key = key;
+            aux->elem.value = v;
+            s[j] = aux;
+            aux->next = emptyBucket;
+            return OK;
+        }else{
+            cell* aux = new cell;
+            aux->elem.key = key;
+            aux->elem.value = v;
+            aux->next = s[j]->next;
+            s[j]->next = aux;
+            return OK;
         }
-        return FAIL;*/
-        aux->next = cur->next;
-        cur->next = aux;
-        return OK;
     }
 }
 
