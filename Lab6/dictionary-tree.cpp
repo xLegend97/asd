@@ -4,87 +4,20 @@
 
 using namespace dict;
 
-struct dict::cell {
+struct dict::BSTnode {
     dictionaryElem  elem;
-	cell* leftChild;
-    cell* rightChild;
+	BSTnode* leftChild;
+    BSTnode* rightChild;
 };
 
-/****************************************************************/
-/*              FUNZIONE NON IMPLEMENTATA                       */
-/****************************************************************/
-int h1(Key s) // funzione di hash che considera unicamente il valore ascii del primo carattere della chiave (se esiste) e restituisce il resto della divisione di tale valore per tableDim 
-{
- // implementare la funzione richiesta e modificare il return 
- //return 0;
-    if(!s.empty()){
-        return (s[0] % tableDim );
-    }
-    return FAIL;
+Key normalize(Key k){
+    removeBlanksAndLower(k);
+    return k;
 }
 
-
-/****************************************************************/
-/*              FUNZIONE NON IMPLEMENTATA                       */
-/****************************************************************/
-int h2(Key s) // funzione di hash che somma il codice ascii di ogni carattere nella chiave e restituisce il resto della divisione di tale somma per tableDim 
-{
- // implementare la funzione richiesta e modificare il return 
- //return 0;
-    int result;
-    for(int i = 0; i < s.size(); i++){
-        result = result + s[i];
-    }
-    return (result % tableDim);
-}
-
-
-/****************************************************************/
-/*              FUNZIONE NON IMPLEMENTATA                       */
-/****************************************************************/
-int h3(Key s) // funzione di hash diversa da h1 ed h2, che progettate e implementate voi seguendo qualche criterio che vi sembra ragionevole
-{
- // implementare la funzione richiesta e modificare il return 
- return 0;
-}
-
-/****************************************************************/
-/*    FUNZIONE DA MODIFICARE PER FARE ESPERIMENTI DIVERSI       */
-/****************************************************************/
-int h(Key s)
-{
-   return h1(s); // modificare questa chiamata per sperimentare l'utilizzo delle funzioni di hash h1, h2, h3, definite prima
-}
-
-
-/****************************************************************/
-/*              FUNZIONE NON IMPLEMENTATA                       */
-/****************************************************************/
 Error dict::deleteElem(const Key k, Dictionary& s)
 {
-    Key key = normalize(k);
-    int j = h(key);
-    if(s[j] == emptyBucket){
-        return FAIL;
-    }if(isAlreadyPresent(key, j, s)){
-        cell* cur = s[j];
-        cell* prev;
-        while(cur != emptyBucket){
-            if(cur->elem.key == k){
-                if(cur->next == emptyBucket){
-                    prev->next = emptyBucket;
-                    delete cur;
-                }else{
-                    prev->next = cur->next;
-                    delete cur;
-                }
-                return OK;
-            }else{
-                prev = cur;
-                cur = cur->next;
-            }
-        }
-    }else return FAIL;
+    return FAIL;
 }
 
 
@@ -100,29 +33,23 @@ Value dict::search(const Key k, const Dictionary& s)
 /****************************************************************/
 /*              FUNZIONE NON IMPLEMENTATA                       */
 /****************************************************************/
-Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
+Error insertElem(const Key k, const Value v, Dictionary& s)
 {
-    Key key = normalize(k);
-    int j = h(key);
-    if(isAlreadyPresent(key, j, s)){
-        return FAIL;    // la chiave è già presente nella lista
-    }else{
-        if(s[j] == emptyBucket){
-            cell* aux = new cell;
-            aux->elem.key = key;
-            aux->elem.value = v;
-            s[j] = aux;
-            aux->next = emptyBucket;
-            return OK;
-        }else{
-            cell* aux = new cell;
-            aux->elem.key = key;
-            aux->elem.value = v;
-            aux->next = s[j]->next;
-            s[j]->next = aux;
-            return OK;
-        }
+    Key k1 = normalize(k);
+    if(s == EMPTYNODE){
+        BSTnode* aux = new s;
+        aux->elem.key = k1;
+        aux->elem.value = v;
+        aux->leftChild = EMPTYNODE;
+        aux->rightChild = EMPTYNODE;
+        return OK;
     }
+    if(k < s->elem.key){
+        return insertElem(k, v, s->leftChild);
+    }
+    if(k > s->elem.key){
+        return insertElem(k, v, s->rightChild);
+    }else return FAIL;
 }
 
 
@@ -131,30 +58,30 @@ Dictionary dict::createEmptyDict()
 {
    Bucket* d = new Bucket[tableDim];
    for (int i=0; i < tableDim; ++i)
-      d[i]=emptyBucket;
+      d[i]=EMPTYNODE;
    return d;
 }
 
 
 /****************************************************************/
-Dictionary readFromFile(string nome_file)
+/*Dictionary readFromFile(string nome_file)
 {
     ifstream ifs(nome_file.c_str()); // apertura di uno stream associato ad un file, in lettura
     if (!ifs) {cout << "\nErrore apertura file, verificare di avere inserito un nome corretto\n"; return createEmptyDict();}  
     return readFromStream(ifs);
-}
+}*/
 
 
 /****************************************************************/
-Dictionary readFromStdin()
+/*Dictionary readFromStdin()
 {
     cout << "\nInserire una sequenza di linee che rispettano la sintassi key: value.<enter>\nDigitare CTRL^ D per terminare l'inserimento\n";
     return readFromStream((std::cin));
-}
+}*/
 
 
 /****************************************************************/
-Dictionary readFromStream(istream& str)
+/*Dictionary readFromStream(istream& str)
 {
     Dictionary d = createEmptyDict();     
     string key, kcopy;
@@ -171,50 +98,30 @@ Dictionary readFromStream(istream& str)
         }
 str.clear();
 return d;
-}
+}*/
 
 
 /****************************************************************/
-int printBucket(Bucket b) // stampa il contenuto di un bucket e restituisce il numero di elementi contenuti nel bucket stesso
-{  
-   int counter = 0;
-   while(b!=emptyBucket) {
-        counter++;
-        cout << (b->elem).key << ": " << (b->elem).value << "\n"; 
-	b=b->next;
-	}
-   return counter;	
-}
+//int printBucket(Bucket b) // stampa il contenuto di un bucket e restituisce il numero di elementi contenuti nel bucket stesso
+//{  
+//   int counter = 0;
+//   while(b!=emptyBucket) {
+//        counter++;
+//       cout << (b->elem).key << ": " << (b->elem).value << "\n"; 
+//	b=b->next;
+//	}
+//   return counter;	
+//}
 
 
 /****************************************************************/
-void print(const Dictionary& s)
+void print(const Dictionary& s)         // ricorsiva e simmetrica
 // stampa il contenuto del dizionario ed anche informazioni su come sono stati organizzati gli elementi
 {
-int bucketDim[tableDim];
-int totalElem = 0;
-for (unsigned int i=0; i<tableDim; ++i)
-   {
-    cout << "\nBucket " << i << "\n\n";
-    bucketDim[i] = printBucket(s[i]);
-    totalElem += bucketDim[i]; 
-   }
-float means = totalElem/(float)tableDim;
-float standardDevSum = 0;
-for (unsigned int i=0; i<tableDim; ++i)
-     standardDevSum += (bucketDim[i]-means)*(bucketDim[i]-means);
-   
-/* Lo scarto tipo, deviazione standard, o scarto quadratico medio e' un indice di dispersione statistico, vale a dire una stima della variabilita' di una popolazione di dati o di una variabile casuale.
-Lo scarto tipo e' uno dei modi per esprimere la dispersione dei dati intorno ad un indice di posizione, quale puo' essere, ad esempio, la media aritmetica. */
-
-cout << "\n===STATISTICHE SULL'ORGANIZZAZIONE DEL DIZIONARIO===\n";
-
-for (unsigned int i=0; i<tableDim; ++i)
-   cout << "\nBucket " << i << ": " << bucketDim[i] << " elementi";
-
-cout << "\nIl numero totale di elementi memorizzati e' " << totalElem;
-cout << "\nIl numero di bucket nel dizionario e' " << tableDim;
-if (tableDim != 0) cout << "\nIl numero atteso di elementi per bucket e' " << means << "\nLa deviazione standard e' " << sqrt(standardDevSum/tableDim);
+    if(s == EMPTYNODE) return;
+    print(s->leftChild);
+    cout << " " <<s->elem.value;
+    print(s->rightChild);
 }
 
 

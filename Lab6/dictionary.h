@@ -15,6 +15,8 @@ namespace dict {
 
 enum Error {OK, FAIL};
 
+const int tableDim = 1000;
+
 typedef string Key; 
 typedef string Value;
 
@@ -27,11 +29,6 @@ struct dictionaryElem {
 };
 typedef dictionaryElem Elem;
 
-Error insertElem(const Key, const Value, Dictionary&);
-Error deleteElem(const Key, Dictionary&);
-Value search(const Key, const Dictionary&);
-Dictionary createEmptyDict();
-
 #ifdef USE_HASH_TABLE
 // Implementazione basata su tabella hash
 
@@ -42,34 +39,23 @@ typedef Bucket* Dictionary; // un Dictionary è un array di dimensione tableDim 
 
 #endif
 
+#ifdef USE_TREE
+// Implementazione basata su un albero BST
 
-#ifdef USE_ORDERED_LIST
-// Implementazione basata su lista ordinata
-
-struct nodo;
-typedef nodo* Dictionary;
-
-#endif
-
-
-#ifdef USE_ORDERED_VECTOR
-// Implementazione basata su vettore ordinato
-
-typedef vector<Elem> Dictionary;
+struct BSTnode;
+typedef BSTnode * Dictionary;
+typedef int EMPTYNODE = NULL;
 
 #endif
 
-
-#if !defined(USE_HASH_TABLE) && !defined(USE_ORDERED_LIST) && !defined(USE_ORDERED_VECTOR)
+#if !defined(USE_HASH_TABLE) && !defined(USE_TREE)
     #error "Must specify USE_HASH_TABLE or USE_ORDERED_LIST or USE_ORDERED_VECTOR"
 #endif
-
 
 Error insertElem(const Key, const Value, Dictionary&);
 Error deleteElem(const Key, Dictionary&);
 Value search(const Key, const Dictionary&);
 Dictionary createEmptyDict();
-
 
 }  // end namespace Dict
 
