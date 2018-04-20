@@ -5,7 +5,6 @@
 #include <chrono>          // necessario compilare con -std=c++11
 #include <stdlib.h>        // srand, rand
 #include <string>          // std::string
-
 #include "string-utility.h"
 
 
@@ -14,25 +13,24 @@ using namespace std;
 
 namespace dict {
 
-// Codici di errore
-
 enum Error {OK, FAIL};
 
-// Tipi e costanti
-
-const int tableDim = 1000; // da modificare per fare esperimenti diversi
-
-typedef string Key;        // tipo base 
-typedef string Value;      // tipo base 
+typedef string Key; 
+typedef string Value;
 
 const Key emptyKey = "###RESERVED KEYWORD### EMPTY KEY";
 const Value emptyValue = "###RESERVED KEYWORD### EMPTY VALUE";
 
-typedef struct {
-    Key	key;
+struct dictionaryElem {
+    Key    key;
     Value value;
-} Elem;
+};
+typedef dictionaryElem Elem;
 
+Error insertElem(const Key, const Value, Dictionary&);
+Error deleteElem(const Key, Dictionary&);
+Value search(const Key, const Dictionary&);
+Dictionary createEmptyDict();
 
 #ifdef USE_HASH_TABLE
 // Implementazione basata su tabella hash

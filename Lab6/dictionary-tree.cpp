@@ -5,10 +5,10 @@
 using namespace dict;
 
 struct dict::cell {
-        Elem	elem;
-	cell	*next;
+    dictionaryElem  elem;
+	cell* leftChild;
+    cell* rightChild;
 };
-
 
 /****************************************************************/
 /*              FUNZIONE NON IMPLEMENTATA                       */
@@ -16,7 +16,11 @@ struct dict::cell {
 int h1(Key s) // funzione di hash che considera unicamente il valore ascii del primo carattere della chiave (se esiste) e restituisce il resto della divisione di tale valore per tableDim 
 {
  // implementare la funzione richiesta e modificare il return 
- return 0;
+ //return 0;
+    if(!s.empty()){
+        return (s[0] % tableDim );
+    }
+    return FAIL;
 }
 
 
@@ -26,7 +30,12 @@ int h1(Key s) // funzione di hash che considera unicamente il valore ascii del p
 int h2(Key s) // funzione di hash che somma il codice ascii di ogni carattere nella chiave e restituisce il resto della divisione di tale somma per tableDim 
 {
  // implementare la funzione richiesta e modificare il return 
- return 0;
+ //return 0;
+    int result;
+    for(int i = 0; i < s.size(); i++){
+        result = result + s[i];
+    }
+    return (result % tableDim);
 }
 
 
@@ -53,7 +62,29 @@ int h(Key s)
 /****************************************************************/
 Error dict::deleteElem(const Key k, Dictionary& s)
 {
-  return OK;  	
+    Key key = normalize(k);
+    int j = h(key);
+    if(s[j] == emptyBucket){
+        return FAIL;
+    }if(isAlreadyPresent(key, j, s)){
+        cell* cur = s[j];
+        cell* prev;
+        while(cur != emptyBucket){
+            if(cur->elem.key == k){
+                if(cur->next == emptyBucket){
+                    prev->next = emptyBucket;
+                    delete cur;
+                }else{
+                    prev->next = cur->next;
+                    delete cur;
+                }
+                return OK;
+            }else{
+                prev = cur;
+                cur = cur->next;
+            }
+        }
+    }else return FAIL;
 }
 
 
@@ -71,7 +102,27 @@ Value dict::search(const Key k, const Dictionary& s)
 /****************************************************************/
 Error dict::insertElem(const Key k, const Value v,  Dictionary& s)
 {
-   return OK;
+    Key key = normalize(k);
+    int j = h(key);
+    if(isAlreadyPresent(key, j, s)){
+        return FAIL;    // la chiave è già presente nella lista
+    }else{
+        if(s[j] == emptyBucket){
+            cell* aux = new cell;
+            aux->elem.key = key;
+            aux->elem.value = v;
+            s[j] = aux;
+            aux->next = emptyBucket;
+            return OK;
+        }else{
+            cell* aux = new cell;
+            aux->elem.key = key;
+            aux->elem.value = v;
+            aux->next = s[j]->next;
+            s[j]->next = aux;
+            return OK;
+        }
+    }
 }
 
 
