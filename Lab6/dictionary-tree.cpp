@@ -37,11 +37,12 @@ Error insertElem(const Key k, const Value v, Dictionary& s)
 {
     Key k1 = normalize(k);
     if(s == EMPTYNODE){
-        BSTnode* aux = new s;
+        BSTnode* aux = new BSTnode;
         aux->elem.key = k1;
         aux->elem.value = v;
         aux->leftChild = EMPTYNODE;
         aux->rightChild = EMPTYNODE;
+        s = aux;
         return OK;
     }
     if(k < s->elem.key){
